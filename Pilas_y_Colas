@@ -1,0 +1,329 @@
+class Colas:                
+    def __init__(self,tamanio=0):
+        self.lista=[]
+        self.tope=0
+        self.size=tamanio
+
+    def empty(self):
+        return self.tope == 0
+
+    def tamanio(self):
+        return self.size == 0
+
+    def lleno(self):
+        return len(self.lista) != self.size
+
+    def push(self,dato):
+        if self.tope < self.size:
+            self.lista += [dato]
+            self.tope += 1
+
+    def pop(self):
+        if self.empty():
+            return "La lista está vacia"
+        else:
+            top = self.lista[0]
+            self.tope -= 1
+            self.lista = self.lista[1:]
+            return top
+
+    def longitud(self):
+        return self.tope
+
+    def show(self):
+        if self.empty():
+            print("La lista está vacia")
+        else:
+            for i in range(0,self.tope):
+                print("[{}]".format(self.lista[i]))
+
+    def buscar(self,buscado):
+        if buscado in self.lista:
+            for pos in range(0,len(self.lista)):
+                if buscado == self.lista[pos]:
+                    print("La posición es {}".format(pos+1))
+        else:
+            print("-1")
+
+import os
+
+def ValidarNumeros(texto):
+    print(texto)
+    while True:
+        valor = input()
+        try:
+            if int(valor) > 0:
+                break
+        except:
+            print("Ingrese sólo valores numéricos...")
+    return int(valor)
+
+def Borrar():
+    os.system("cls")
+
+from Helpers import ValidarNumeros, Borrar
+import time
+
+class Lista:
+    def __init__(self,datos=[]) -> None:
+        self.lista=datos
+    
+    def empty(self):
+        return len(self.lista) == 0
+    
+    def insertar(self,dato):
+        self.lista.append(dato)
+        
+    def obtener(self):
+        if self.empty():
+            print("La lista está vacia")
+        else:
+            return self.lista.pop()
+
+    def eliminarElemento(self,pos):
+        pos = pos-1
+        if pos in range(0,len(self.lista)):
+                ele = self.lista[pos]
+                self.lista = self.lista[0:pos] + self.lista[pos+1:]
+                return ele
+        else:
+                return None
+
+    def insertarElemento(self,pos,dato):
+        pos-=1
+        if not self.empty():
+            while pos not in range(0,len(self.lista)):
+                print("Posición inválida")
+                time.sleep(1)
+                pos = ValidarNumeros("")
+                pos-=1
+        else:
+            print("La lista está vacia")
+
+        if pos in range(0,len(self.lista)):
+            ele = self.lista[pos]
+            self.lista = self.lista[0:pos] + [dato] + self.lista[pos:]
+            print(self.lista)
+        
+    def mostrar(self):
+        if len(self.lista) == 0:
+            print("La lista está vacia")
+        else:
+            print("Datos de lista")
+            for i in self.lista:
+                print(i)
+    
+    def Buscar(self, valor):
+        if valor in self.lista:  
+            for pos in range(0,len(self.lista)):    
+                if valor == self.lista[pos]:
+                    print("La posición del valor {} es {}".format(valor, pos+1))    
+            input("\nPresione ENTER para salir...")
+            Borrar()
+        elif self.empty():
+            print("La lista está vacia")
+        else:
+            print("Su valor no está en la lista")
+            input("\nPresione ENTER para salir...")
+            Borrar()
+        
+import time
+from Menu import Menu
+from Lista import Lista
+from Pilas import Stack
+from Colas import Colas
+from Helpers import Borrar, ValidarNumeros
+
+
+ListaMenu = ["1) Lista","2) Pilas","3) Colas","4) Salir"]
+ListadeLista = ["1) Push","2) Pop","3) Show","4) Eliminar","5) Insertar","6) Buscar","7) Salir"]
+ListaPilasYColas = ["1) Cambiar Tamaño de lista","2) Push","3) Pop","4) Show","5) Buscar","6) Longitud","7) Salir"]
+Borrar()
+MenuObj = Menu()
+Variablelista = Lista()
+VariablePilas = Stack()
+VariableColas = Colas()
+Respuesta = ""
+
+while Respuesta != "4":
+    Respuesta = MenuObj.menu(ListaMenu,"Menú")
+    Respuesta2 = ""
+    if Respuesta == "1":
+        Borrar()
+        while Respuesta2 != "7":
+            Respuesta2 = MenuObj.menu(ListadeLista,"Menú - Listas")
+            Borrar()
+            if Respuesta2 == "1":
+                Dato = ValidarNumeros("Ingrese el valor: ")
+                Variablelista.insertar(Dato)
+                print("¡Dato ingresado!")
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "2":
+                print(Variablelista.obtener())
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "3":
+                Variablelista.mostrar()
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "4":
+                Pos = ValidarNumeros("Ingrese posición a eliminar: ")
+                PosRespuesta = Variablelista.eliminarElemento(Pos)
+                print(PosRespuesta if PosRespuesta else "posición: {} no valida".format(Pos))
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "5":
+                Dato = ValidarNumeros("Ingrese el valor a insertar: ")
+                Pos = ValidarNumeros("Ingrese posición del valor a insertar: ")
+                Variablelista.insertarElemento(Pos,Dato)
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "6":
+                if Variablelista.empty():
+                    print("La lista está vacía.")
+                    input("\nPresione ENTER para salir...")
+                    Borrar()
+                else:
+                    valor = ValidarNumeros("Ingrese su valor a buscar: ")
+                    Variablelista.Buscar(valor)
+    elif Respuesta == "2":
+        Borrar()
+        while Respuesta2 != "7":
+            if VariablePilas.tamanio():
+                VariablePilas = Stack(ValidarNumeros("Ingrese tamaño de la pila: "))
+                Borrar()
+            Respuesta2 = MenuObj.menu(ListaPilasYColas,"Menú - Pilas")
+            Borrar()
+            if Respuesta2 == "1":
+                VariablePilas = Stack(ValidarNumeros("Ingrese el tamaño de la nueva pila: "))
+                Borrar()
+            elif Respuesta2 == "2":
+                Dato = ValidarNumeros("Ingrese el dato: ")
+                if VariablePilas.lleno():
+                    VariablePilas.push(Dato)
+                    print("¡Dato ingresado!")
+                    input("\nPresione ENTER para salir...")
+                    Borrar()
+                else:
+                    print("La Pila está Llena")
+                    input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "3":
+                print(VariablePilas.pop())
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "4":
+                VariablePilas.show()
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "5":
+                VariablePilas.buscar(ValidarNumeros("Ingrese su valor a buscar: "))
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "6":
+                print("El tope de la lista es {}".format(VariablePilas.longitud()))
+                input("\nPresione ENTER para salir...")
+                Borrar()
+    elif Respuesta == "3":
+        Borrar()
+        while Respuesta2 != "7":
+            if VariableColas.tamanio():
+                VariableColas = Colas(ValidarNumeros("Ingrese tamaño de la cola: "))
+                Borrar()
+            Respuesta2 = MenuObj.menu(ListaPilasYColas,"Menú - Colas")
+            Borrar()
+            if Respuesta2 == "1":
+                VariableColas = Colas(ValidarNumeros("Ingrese el tamaño de la nueva cola: "))
+                Borrar()
+            elif Respuesta2 == "2":
+                Dato = ValidarNumeros("Ingrese el dato: ")
+                if VariableColas.lleno():
+                    VariableColas.push(Dato)
+                    print("¡Dato ingresado!")
+                    input("\nPresione ENTER para salir...")
+                    Borrar()
+                else:
+                    print("La Cola está Llena")
+                    input("\nPresione ENTER para salir...")
+                Borrar()
+                Borrar()
+            elif Respuesta2 == "3":
+                print(VariableColas.pop())
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "4":
+                VariableColas.show()
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "5":
+                VariableColas.buscar(ValidarNumeros("Ingrese su valor a buscar: "))
+                input("\nPresione ENTER para salir...")
+                Borrar()
+            elif Respuesta2 == "6":
+                print("El tope de la lista es {}".format(VariableColas.longitud()))
+                input("\nPresione ENTER para salir...")
+                Borrar()
+    elif Respuesta == "4":
+        Borrar()
+        print("Usted está saliendo...");time.sleep(1)
+    elif Respuesta not in ["1","2","3","4"]:
+        print("Ingrese un valor de la lista")
+        time.sleep(0.5)
+        Borrar()
+class Menu:
+    def __init__(self):
+        pass
+
+    def menu(self,opciones,titulo):
+        print("*"*20,titulo,"*"*20)
+        for opcion in opciones:
+            print("{}".format(opcion))
+        opc = input("Escoja una Opcion[1...{}]: ".format(len(opciones)))
+        return opc
+class Stack:                
+    def __init__(self,tamanio=0):
+        self.lista=[]
+        self.tope=0
+        self.size=tamanio
+
+    def empty(self):
+        return self.tope == 0
+
+    def tamanio(self):
+        return self.size == 0
+
+    def lleno(self):
+        return len(self.lista) != self.size
+
+    def push(self,dato):
+        if self.tope < self.size:
+            self.lista += [dato]
+            self.tope += 1
+
+    def pop(self):
+        if self.empty():
+            return "La lista está vacia"
+        else:
+            top = self.lista[-1]
+            self.tope -= 1
+            self.lista = self.lista[:-1]
+            return top
+
+    def longitud(self):
+        return self.tope
+
+    def show(self):
+        if self.empty():
+            print("La lista está vacia")
+        else:                    
+            for tope in range(self.tope-1,-1,-1):
+                print("[{}]".format(self.lista[tope]))
+
+    def buscar(self,buscado):
+        if buscado in self.lista:
+            for pos in range(self.tope-1,-1,-1):
+                if buscado == self.lista[pos]:
+                    print("La posición es {}".format(pos+1))
+        else:
+            print("-1")
